@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EmployeeApi.Model;
+using EmployeeApi.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeApi.Controllers
@@ -10,12 +12,22 @@ namespace EmployeeApi.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        private readonly EmployeeContext _context;
+
+        public ValuesController (EmployeeContext context)
         {
-            return new string[] { "value1", "value2" };
+            _context = context;
         }
+
+        //// GET api/values
+        //[HttpGet]
+        //public ActionResult<IEnumerable<Employee>> Get()
+        //{
+        //    var repo = new EmployeeRepository(_context);
+        //    return Task<repo.GetEmployees();
+
+        //    //return new string[] { "value1", "value2" };
+        //}
 
         // GET api/values/5
         [HttpGet("{id}")]

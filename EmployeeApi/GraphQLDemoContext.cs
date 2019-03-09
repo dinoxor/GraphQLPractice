@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeApi
 {
-    public class GraphQLDemoContext : DbContext
+    public partial class GraphQLDemoContext : DbContext
     {
         public GraphQLDemoContext ()
         {

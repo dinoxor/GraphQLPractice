@@ -9,8 +9,13 @@ namespace EmployeeApi.Repository
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        private readonly GraphQLDemoContext _context;
+        //private readonly EmployeeContext _context;
+        //public EmployeeRepository(EmployeeContext context)
+        //{
+        //    _context = context;
+        //}
 
+        private readonly GraphQLDemoContext _context;
         public EmployeeRepository(GraphQLDemoContext context)
         {
             _context = context;

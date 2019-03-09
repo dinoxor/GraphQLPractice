@@ -14,7 +14,7 @@ namespace EmployeeApi.Types
             Field(a => a.EmployeeId);
             Field(a => a.FirstName);
             Field(a => a.LastName);
-            Field(a => a.Email);
+            Field(a => a.Email).Description("Full email");
             Field(a => a.Mobile);
             Field(a => a.Company);
             Field(a => a.Address);

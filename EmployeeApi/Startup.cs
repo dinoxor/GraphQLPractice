@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EmployeeApi.Repository;
+using EmployeeApi.Types;
+using GraphQL;
+using GraphQL.Server;
+using GraphQL.Server.Ui.Playground;
+using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,9 +31,17 @@ namespace EmployeeApi
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddDbContext<EmployeeContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:SampleDB"]));
+        {            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IDependencyResolver>
+                (s => new FuncDependencyResolver(s.GetRequiredService));
+            services.AddScoped<EmployeeSchema>();
+            services.AddGraphQL(o => { o.ExposeExceptions = false; }).AddGraphTypes(ServiceLifetime.Scoped);
+
+            services.AddDbContext<GraphQLDemoContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SampleDB")));
+            //services.AddDbContext<EmployeeContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("SampleDB")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +59,9 @@ namespace EmployeeApi
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            app.UseGraphQL<EmployeeSchema>();
+            app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
         }
     }
 }
